@@ -1,10 +1,13 @@
 
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 import './Avatar.css';
 
-export const Avatar =({user})=> {
+export const Avatar =()=> {
+    const {currentUser} = useContext(UserContext);
 return (
     <a href="/" className='avatar-container'>
-        <img src={user.avatar} alt='аватар' className='ava'/>
+        <img src={currentUser.avatar} alt='аватар' className='ava'/>
     </a>
 )
 }

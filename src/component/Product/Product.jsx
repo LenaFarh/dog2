@@ -3,30 +3,35 @@ import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import cn from 'classnames';
 import {ReactComponent as Save} from './img/save.svg';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { api } from '../../utils/api';
+import { useParams } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 
-const product_id = '622c779c77d63f6e70967d1c';
-
-
-export const Product = ({currentUser, id}) => {
+export const Product = ({id}) => {
  
 const [product, setProduct]= useState({});    
+
 useEffect(()=>{
-api.getProductById(id).then((data)=>setProduct(data))
+api.getProductById(id).then((data)=>setProduct(data));
 },[id])
 
-const isLiked = product?.likes?.some((el)=> el===currentUser._id)
+const currentUser = useContext(UserContext);
+const isLiked = product?.likes?.some((el) => el === currentUser._id);
+                
 
   return (
     <>
+    <div className= {s.title}>{product.name}</div>
+        <div>Артикул:</div>
       <div className={s.product}>
         <div className={s.imgWrapper}>
           <img className={s.img} src={product.pictures} alt={`Изображение`} />
+          {product.tags?.map((e)=>(<span className={`tag tag_type_${e}`}>{e}</span>))}
         </div>
         <div className={s.desc}>
           <span className={s.price}>
-            200&nbsp;₽
+          {product.price}&nbsp;₽
           </span>
           {!!product.discount && (
           <span className={`${s.price} card__price_type_discount`}>
@@ -51,16 +56,17 @@ const isLiked = product?.likes?.some((el)=> el===currentUser._id)
             <div className={s.right}>
               <h3 className={s.name}>Доставка по всему Миру!</h3>
               <p className={s.text}>
-                Доставка курьером — <span className={s.bold}>от 399 ₽</span>
+                Доставка курьером — <span className={s.bold}>от 399 ₽</span></p>
+                <p className={s.text}> Доставка до пункта выдачи - <span className={s.bold}>от 199 ₽</span>
               </p>
             </div>
           </div>
           <div className={s.delivery}>
             <img src={quality} alt='quality' />
             <div className={s.right}>
-              <h3 className={s.name}>Доставка по всему Миру!</h3>
+              <h3 className={s.name}>Гарантия качества</h3>
               <p className={s.text}>
-                Доставка курьером — <span className={s.bold}>от 399 ₽</span>
+              Если Вам не понравилось качество нашей продукции, мы вернем деньги, либо сделаем все возможное, чтобы удовлетворить ваши нужды.
               </p>
             </div>
           </div>
@@ -73,9 +79,9 @@ const isLiked = product?.likes?.some((el)=> el===currentUser._id)
         <h2 className={s.title}>Характеристики</h2>
         <div className={s.grid}>
           <div className={s.naming}>Вес</div>
-          <div className={s.description}>1 шт 120-200 грамм</div>
+          <div className={s.description}>1 шт {product.wight}</div>
           <div className={s.naming}>Цена</div>
-          <div className={s.description}>490 ₽ за 100 грамм</div>
+          <div className={s.description}>{product.price} ₽ за {product.wight}</div>
           <div className={s.naming}>Польза</div>
           <div className={s.description}>
             <p>

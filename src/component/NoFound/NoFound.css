@@ -1,0 +1,12 @@
+.no_found{
+    font-size: 50px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn_found {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

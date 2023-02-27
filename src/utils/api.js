@@ -29,11 +29,20 @@ const config = {
       }).then((res) => onResponse(res));
     }
 
-    addNewProduct(body) {
+    addNewProduct() {
       return fetch(`${this._baseUrl}/products`, {
         headers: this._headers,
         method: "POST",
-        body: JSON.stringify(body)
+        body: JSON.stringify({     
+    "available": true, 
+    "name": "для собак", 
+    "pictures": "https://avatars.mds.yandex.net/get-mpic/6597196/img_id7421965786492771631.jpeg/orig", 
+    "price": 450, 
+    "discount": 10, 
+    "stock": 10, 
+    "wight": "100 г",
+    "description": "Натуральное лакомство для взрослых и растущих собак" 
+})
       }).then(onResponse);
     }
 
@@ -107,18 +116,6 @@ const config = {
   }
   }
   
-const newProduct = {
-    "id": 1674032335402,
-    "available": true, 
-    "name": "для собак", 
-    "pictures": "https://avatars.mds.yandex.net/get-mpic/6597196/img_id7421965786492771631.jpeg/orig", 
-    "price": 450, 
-    "discount": 10, 
-    "stock": 10, 
-    "wight": "100 г",
-    "description": "Натуральное лакомство для взрослых и растущих собак (с четырех месяцев). Кроличьи уши с куриным мясом Мнямс - это полезное диетическое лакомство, содержащее легкоусвояемый белок. Настоящий деликатес с вялеными ломтиками отборного филе не оставит равнодушным даже самого капризного любимца." 
-}
-
 const updProduct = {
   "id": 1674032335402,
   "available": true, 
