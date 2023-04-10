@@ -20,3 +20,6 @@ export const useDebounce = (statSarch, delay = 500) => {
   }, [statSarch]);
   return DebounceValue;
 }
+
+export const findLike = (product, currentUser)=> 
+   product?.likes?.some((el) => el === currentUser._id);

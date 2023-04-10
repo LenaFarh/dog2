@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Logo } from '../Logo/Logo';
 import './Footer.css';
 
@@ -18,7 +19,7 @@ export const Footer =()=> {
     </div>
       <div className="footer__links footer__group">
         <a href="/">Оплата и доставка</a>
-        <a href="/">Часто спрашивают</a>
+        <Link to={"/faq"}>Часто спрашивают</Link>
         <a href="/">Обратная</a>
         <a href="/">Контакты</a>
       </div>

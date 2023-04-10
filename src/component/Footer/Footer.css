@@ -2,6 +2,7 @@
     width: 100%;
     background-color: #FFE44D;
     padding: 40px 0;
+    flex: 0 0 auto;
     }
     
     .footer__wrap {
@@ -41,6 +42,11 @@
             flex-direction: column;
             max-width: 50%;
         }
+
+        .select {
+          width: 120px;
+        }
+
 
     @media (max-width: 700px) {
         .footer__wrap {

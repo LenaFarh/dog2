@@ -1,0 +1,14 @@
+.form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form_title {
+    font-family: 'Nunito';
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 32px;
+    color: #000000;
+}

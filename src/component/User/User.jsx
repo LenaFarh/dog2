@@ -7,8 +7,8 @@ export const User =()=> {
 return (
     <a href="/" className='user-container user__links'>
         <span>{currentUser.name}</span>
-        <span>{currentUser.about}</span>
-        <span>{currentUser.email}</span>
+        {/* <span>{currentUser.about}</span>
+        <span>{currentUser.email}</span> */}
     </a>
 )
 }

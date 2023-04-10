@@ -1,54 +1,57 @@
-const config = {
+
+  const freshToken = ()=>{
+    return { headers: {
+      'content-type': 'application/json',
+      Authorization:
+        localStorage.getItem('token'),
+    }}
+  }
+  
+  const config = {
     baseUrl: 'https://api.react-learning.ru',
     headers: {
       'content-type': 'application/json',
-      Authorization:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2VlNjI4NTNhYTI4NTAzNGY3OGFiMTgiLCJncm91cCI6Imdyb3VwLTEwIiwiaWF0IjoxNjc2NTY3MzIxLCJleHAiOjE3MDgxMDMzMjF9.Ll4fQjRpEicfUonoM9L5V4AXjGYy__TvqDThnREHPuY',
+        Authorization:
+          localStorage.getItem('token'),
     },
+    freshToken: freshToken
   };
   
+
   const onResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   };
   
   class Api {
-    constructor({baseUrl, headers}) {
-      this._baseUrl = baseUrl;
-      this._headers = headers;
+    constructor(data) {
+      this._baseUrl = data.baseUrl;
+      this._headers = data.headers;
+      this._freshToken = data.freshToken;
     }
 
     getProductList(page=1) {
       return fetch(`${this._baseUrl}/products?page=${page}`, {
-        headers: this._headers,
+      ...this._freshToken(),
       }).then(onResponse);
     }
 
     getProductById(id) {
       return fetch(`${this._baseUrl}/products/${id}`, {
-        headers: this._headers,
+        ...this._freshToken(),
       }).then((res) => onResponse(res));
     }
 
-    addNewProduct() {
+    addNewProduct(data) {
       return fetch(`${this._baseUrl}/products`, {
-        headers: this._headers,
+        ...this._freshToken(),
         method: "POST",
-        body: JSON.stringify({     
-    "available": true, 
-    "name": "для собак", 
-    "pictures": "https://avatars.mds.yandex.net/get-mpic/6597196/img_id7421965786492771631.jpeg/orig", 
-    "price": 450, 
-    "discount": 10, 
-    "stock": 10, 
-    "wight": "100 г",
-    "description": "Натуральное лакомство для взрослых и растущих собак" 
-})
+        body: JSON.stringify(data)
       }).then(onResponse);
     }
 
     updateProduct(productId, data) {
       return fetch(`${this._baseUrl}/products/${productId}`, {
-        headers: this._headers,
+        ...this._freshToken(),
         method: 'PATCH',
         body: JSON.stringify(data)  
     }).then((res) => onResponse(res));
@@ -56,64 +59,89 @@ const config = {
 
     deleteProductId(productId){
      return fetch(`${this._baseUrl}/products/${productId}`, {
-      headers: this._headers,
+      ...this._freshToken(),
        method: 'DELETE'   
       }).then(onResponse); 
   }
 
     getUsersInfo() {
         return fetch(`${this._baseUrl}/users/me`, {
-            headers: this._headers,
+          ...this._freshToken(),
           }).then(onResponse);
     }
 
+    updateUserInfo(body) {
+      return fetch(`${this._baseUrl}/users/me`, {
+        ...this._freshToken(),
+        method: "PATCH",
+        body:JSON.stringify(body),
+        }).then(onResponse);
+  } 
+
+    getUsers() {
+      return fetch(`${this._baseUrl}/users`, {
+        ...this._freshToken(),
+        }).then(onResponse);
+  }
+
+  updateAvatar(avatar){
+    return fetch(`${this._baseUrl}/v2/group-10/users/me/avatar`, {
+      ...this._freshToken(),
+      method: "PATCH",
+      body:JSON.stringify(avatar),
+    }).then(onResponse);
+  }
+
     searchProducts(query) {
         return fetch(`${this._baseUrl}/products/search?query=${query}`, {
-            headers: this._headers,
+          ...this._freshToken(),
           }).then(onResponse);
     }
 
     deleteLike(productId) {
       return fetch(`${this._baseUrl}/products/likes/${productId}`, {
-        headers: this._headers,
+        ...this._freshToken(),
         method: "DELETE",
       }).then(onResponse);
     }
 
     addLike(productId) {
       return fetch(`${this._baseUrl}/products/likes/${productId}`, {
-        headers: this._headers,
+        ...this._freshToken(),
         method: "PUT",
       }).then(onResponse);
     }
 
   deleteCommentProduct(productId, reviewId) {
       return fetch(`${this._baseUrl}/products/review/${productId}/${reviewId}`, {
-          headers: this._headers,
+        ...this._freshToken(),
           method: 'DELETE'
       }).then((res) => onResponse(res));
   }
   
   getAllCommentProducts() {
       return fetch(`${this._baseUrl}/products/review/`, {
-          headers: this._headers,
+        ...this._freshToken(),
           method: 'GET'
       }).then((res) => onResponse(res));
   }
   
   getCommentProduct(productId) {
       return fetch(`${this._baseUrl}/products/review/${productId}`, {
-          headers: this._headers,
+        ...this._freshToken(),
           method: 'GET'
       }).then((res) => onResponse(res));
   }
 
-  addCommentProduct(productId) {
+  addCommentProduct(productId, body) {
     return fetch(`${this._baseUrl}/products/review/${productId}`, {
-      headers: this._headers,
+      ...this._freshToken(),
       method: "POST",
+      body:JSON.stringify(body)
     }).then(onResponse);
   }
+
+
   }
   
 const updProduct = {

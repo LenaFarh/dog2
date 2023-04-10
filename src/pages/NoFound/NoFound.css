@@ -1,0 +1,21 @@
+.no_found{
+    font-size: 50px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 2rem;
+}
+
+.btn_found {
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    border-radius: 55px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color .3s;
+}

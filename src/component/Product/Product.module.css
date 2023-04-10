@@ -185,6 +185,97 @@
 	stroke: red;
 }
 
+.product_back {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    color: #7B8E98;
+}
+
+.rateInfo {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.review_author{
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	font-weight: 800;
+	font-size: 20px;
+	line-height: 24px;
+	color: #1A1A1A;
+	padding: 1rem 0 0 0;
+
+}
+
+.review {
+border-top: 1px solid #ECEFF1;
+}
+
+.text {
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	color: #1A1A1A;
+	padding-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+	padding-right: 3rem;
+}
+
+.text__img {
+cursor: pointer;
+}
+
+.review__date{
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	color: #7b8e98;
+}
+
+.review__info{
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
+.review__avatar {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+}
+
+.review__form {
+	margin-bottom: 20px;
+}
+
+.review__form__text{
+	border: 1px solid #eceff1;
+	border-radius: 16px;
+	padding: 1rem;
+	resize: none;
+	width: 40rem;
+}
+
+.review__wtapper {
+	margin-bottom: 20px;
+}
+
+.review__show_more{
+	display: flex;
+	gap: 1rem;
+    padding: 1rem 0;
+}
+
+.review__show_more span{
+cursor: pointer;
+color: orange;
+}
+
 @media (max-width: 1000px) {
 	.product {
 		gap: 20px;

@@ -4,17 +4,25 @@ import { Search } from '../Search/Search';
 import { User } from '../User/User';
 import './Header.css';
 import IconBasket from '../Header/IconBasket';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/userContext';
+import { CardContext } from '../../context/cardContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { ReactComponent as Like } from "../Card/like.svg";
+import { ReactComponent as Logohed } from "./images/loginh.svg"
 
 
-export const Header =({setSarch, statSarch, parentCounter=0})=> { 
+export const Header =({setShowModal})=> { 
+    const {setSarch, statSarch, parentCounter, isAuthentificated} = useContext(UserContext);
+    const {favorites} = useContext(CardContext);
 
-    const [counter, setcounter] = useState(parentCounter);
-    
 
-useEffect(()=>{
-    setcounter((st)=>st+1)  
-},[ parentCounter])
+const navigate= useNavigate()
+
+const handleLogout=()=>{
+    localStorage.removeItem('token');
+    navigate('/login')
+}
 
     return (
     <div className = 'header'>
@@ -25,12 +33,25 @@ useEffect(()=>{
                 <Search setSarch={setSarch} statSarch={statSarch}/>
                 </div>
                 <div>
-                <IconBasket count={counter}/>   
+                <IconBasket count={parentCounter}/>   
                 </div>
-                <div className='header__rait'>
-                    <User/>
-                   <Avatar/>
+                <div>
+                    <Link to={'/favorites'} className="header__bubble-link">
+                    <Like className='heder__liked'/>
+                   {favorites.length !==0 && <span className='heder_bubble'>{favorites.length}</span>} 
+                    </Link>
                 </div>
+                {!isAuthentificated ? <Link to={'/login'} className="header_link" onClick={()=>setShowModal(true)}>
+                <Logohed/>
+                </Link> :
+                <>
+                <Link to={'/profile'} className='header_link' onClick={()=>setShowModal(true)}>profile</Link>
+                <span onClick={handleLogout}>logout</span>
+                 <div className='header__rait'> 
+                            <User />
+                            <Avatar />
+                        </div> 
+                        </>} 
             </div>
             </div> 
     </div>);

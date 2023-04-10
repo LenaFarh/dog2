@@ -12,6 +12,11 @@
   pointer-events: none;
 }
 
+.content {
+padding: 20px 0;
+flex: 1 0 auto;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -31,6 +36,14 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.not__auth {
+display: flex;
+min-height: 505px;
+flex: 1 0 auto;
+justify-content: center;
+align-items: center;
 }
 
 @keyframes App-logo-spin {

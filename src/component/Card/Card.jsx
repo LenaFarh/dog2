@@ -3,6 +3,7 @@ import './Card.css'
 import { Link } from "react-router-dom"
 import React from "react"
 import { UserContext } from "../../context/userContext"
+import { findLike } from "../../utils/utils"
 
 export const Card = ({
     product, 
@@ -17,7 +18,7 @@ export const Card = ({
 
     const {currentUser} = React.useContext(UserContext);
 
-    const isLiked = product.likes.some(el=> el===currentUser._id)
+    const isLiked = findLike(product, currentUser);
     const handleLikeClick= ()=>{
     onProductLike(product);
 }    
@@ -29,7 +30,7 @@ export const Card = ({
           <span className="card__discount">-{discount}%</span>)}
                 </div>
             <div className="card__sticky card__sticky_type_top-right">
-                <button className={`card__favorite ${isLiked ? 'card__favorite_active': ''}`}
+                <button className={`card__favorite ${isLiked ? 'card__favorite_active': 'card__favorite_not_active'}`}
                 onClick = {handleLikeClick} >
                 <Like className="card__liked"/>
                 {product.likes.length}
@@ -43,9 +44,9 @@ export const Card = ({
         <p className="card__name">{name}</p>
     </div>
 </Link>
-<span 
+<span
 onClick={()=>setParentCounter((state)=>state+1)} 
-className="card__cart btn btn_type_primary" >В корзину</span>
+className="card__card btn btn_type_primary" >В корзину</span>
         </div>
     )
 }
