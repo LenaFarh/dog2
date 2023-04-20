@@ -5,7 +5,7 @@ import { Card } from "../Card/Card"
 import './Cards.css'
 
 export const Cards = ({cards}) => {
-    const { handleProductLike, setParentCounter} = useContext(CardContext)
+    const { setParentCounter} = useContext(CardContext)
 
     return (
         <div className="cards">
@@ -13,7 +13,6 @@ export const Cards = ({cards}) => {
                 <Card 
                 setParentCounter={setParentCounter}
                 product={item} 
-                onProductLike={handleProductLike} 
                 {...item} 
                 key={item.id} />
             ))}

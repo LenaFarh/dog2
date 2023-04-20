@@ -2,62 +2,74 @@ import { Select } from 'antd';
 import { useContext, useEffect, useState } from "react"
 import { Cards } from "../../component/Cards/Cards"
 import { Sort } from "../../component/Sort/Sort"
-import { CardContext } from "../../context/cardContext"
 import { UserContext } from "../../context/userContext"
 import { getAnswer } from "../../utils/utils"
 import "../../component/Footer/Footer.css"
 import { useNavigate } from 'react-router-dom';
+import { Modal } from '../../component/Modal/Modal'
+import { CreateProduct } from '../../component/CreateProduct/CreateProduct';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts, fetchProductsSearch, setPage, setPagesize } from '../../storage/products/productSlice';
 
-export const CatalogPage =()=>{
+export const CatalogPage = ({ setShowModal, activeModal }) => {
 
-    const {statSarch} = useContext(UserContext);
-    const {cards}= useContext(CardContext);
-    const [pageSize, setPageSize]=  useState(10);
-    const [page, setPage]=  useState(1);
-    const [paginatedCards, setPaginatedCards]=  useState([]);
-    const [optionsPage, setOptionsPage]=  useState([]);
+    const { statSarch } = useContext(UserContext);
+    const [optionsPage, setOptionsPage] = useState([]);
+    const [isCreateModalActive, setCreateModal] = useState(false);
+    const products = useSelector(s => s.products.data)
+    const {total, page, pageSize} = useSelector(s => s.products)
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
-    const total= cards.length;  
-    const pages = Math. ceil(total/pageSize);
-    const pageCounter= new Array(pages).fill({}).map((e, i)=>({
-        value: i+1, label: `${i+1}`
-    }));
-    setOptionsPage(pageCounter);
-    setPage(1);
-    }, [cards, pageSize])
+    useEffect(() => {
+        const pages = Math.ceil(total / pageSize);
+        const pageCounter = new Array(pages).fill({}).map((e, i) => ({
+            value: i + 1, label: `${i + 1}`
+        }));
+        setOptionsPage(pageCounter);
+    }, [products, pageSize])
 
-    useEffect(()=>{
-    const paginated = cards.slice(pageSize*(page-1), pageSize*page);
-    setPaginatedCards(paginated);
-    },[cards, pageSize, page]);
+    useEffect(() => {
+        dispatch(fetchProducts({ page: 1, pageSize }))
+        dispatch(setPage(1))
+    }, [dispatch, pageSize])
 
-    const navigate= useNavigate();
+    useEffect(() => {
+        if(page===1) return
+        dispatch(fetchProducts({ page, pageSize }))
+    }, [page])
 
-    useEffect(()=>{
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
         navigate(`/?page=${page}&size=${pageSize}`)
-    },[navigate,pageSize, page])
+    }, [navigate, pageSize, page])
 
     const optionsSize = [
-        { value: 10, label:10},
-        { value: 20, label:20},
-        { value: 30, label:30},
-        { value: 40, label:40},
-        { value: 50, label:50},   
+        { value: 10, label: 10 },
+        { value: 20, label: 20 },
+        { value: 30, label: 30 },
+        { value: 40, label: 40 },
+        { value: 50, label: 50 },
     ]
 
-     const handleChange = (v)=>{
-        setPageSize(v)
+    const handleChange = (v) => {
+       dispatch(setPagesize(v))
     }
 
-    return  <>
-    {statSarch && (
-    <p>По запросу {statSarch} найдено {cards?.length} {getAnswer(cards.length)}
-    </p>
-    )}
-    <Sort></Sort>
-    <Cards cards={paginatedCards}/>
-    <Select  className='select' defaultValue={10} options={optionsSize} onChange= {handleChange}/>
-    <Select  className='select' defaultValue={1} value={page} options={optionsPage} onChange= {setPage}/>
+    return <>
+        {statSarch && (
+            <p>По запросу {statSarch} найдено {products?.length} {getAnswer(products.length)}
+            </p>
+        )}
+
+        <button className='btn' onClick={() => setCreateModal(true)}>Добавить товар</button>
+        {isCreateModalActive && <Modal activeModal={isCreateModalActive} setShowModal={setCreateModal}>
+            <CreateProduct setCreateModal={setCreateModal} />
+        </Modal>}
+        <Sort></Sort>
+        <Cards cards={products} />
+        <Select className='select' defaultValue={10} options={optionsSize} onChange={handleChange} />
+        <Select className='select' defaultValue={1} value={page} options={optionsPage} onChange={(v)=>dispatch(setPage(v))} />
     </>
 }

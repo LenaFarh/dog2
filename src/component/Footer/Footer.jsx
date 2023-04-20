@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom';
 import { Logo } from '../Logo/Logo';
 import './Footer.css';
 
+import telegram from './img/telegram.svg';
+import whatsapp from './img/whatsapp.svg';
+import vk from './img/vk.svg';
+import viber from './img/viber.svg';
+import instagram from './img/instagram.svg';
+
 export const Footer =()=> {
     return (
     <div className = 'footer'>
@@ -28,7 +34,34 @@ export const Footer =()=> {
       <div className="footer__links">
          <a href="tel:7999000000" className='tel'><h3>+7 (999) 00-00-00</h3></a>
          <a href="/">dogfood@gmail.com</a>
-         <a href="/">bnn</a>
+         <ul className='socials contacts_socials'>
+                            <li className=''>
+                                <a href='/'>
+                                    <img src={telegram} alt="" />
+                                </a>
+                            </li>
+                            <li className=''>
+                                <a href='/'>
+                                    <img src={instagram} alt="" />
+                                </a>
+                            </li>
+                            <li className=''>
+                                <a href='/'>
+                                    <img src={vk} alt="" />
+                                </a>
+                            </li>
+                            <li className=''>
+                                <a href='/'>
+                                    <img src={viber} alt="" />
+                                </a>
+                            </li>
+                            <li className=''>
+                                <a href='/'>
+                                    <img src={whatsapp} alt="" />
+                                </a>
+                            </li>
+                        </ul>
+
       </div>
     </div>
     </div>

@@ -3,7 +3,7 @@ import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import cn from 'classnames';
 import {ReactComponent as Save} from './img/save.svg';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { api } from '../../utils/api';
 import { UserContext } from '../../context/userContext';
 import { findLike } from '../../utils/utils';
@@ -15,8 +15,12 @@ import { useForm } from 'react-hook-form';
 import { BaseButton } from "../BaseButton/BaseButton";
 import {ReactComponent as Bascet} from './img/bascet.svg';
 import { openNotification } from '../Notification/Notification';
+import { useSelector } from 'react-redux';
+import { ReactComponent as Basket } from './img/bascet.svg';
+import { Modal } from '../Modal/Modal';
+import { UpdateProduct } from '../UpdateProduct/UpdateProduct';
 
-export const Product = ({id, product, reviews, onSentReview, onDeleteReview}) => { 
+export const Product = ({id, product, reviews, onSentReview, onDeleteReview, onProductLike}) => { 
 
 const [rate, setRate] = useState(3) 
 const [currentRating, setCurrentRating]= useState(0)
@@ -24,9 +28,10 @@ const [reviewsProduct, setReviewsProduct]= useState(reviews)
 const [users, setUsers] =  useState([])
 const [showForm, setShowForm]= useState(false)
 const [productCount, setProductCount]= useState(0)
-
+const [updateModal, setUpdateModal] = useState(false);
 const {setParentCounter}= useContext(UserContext);
-const {currentUser} = useContext(UserContext);
+
+const currentUser = useSelector(s=>s.user.data)
 
 const {register, handleSubmit, reset} = useForm({mode:"onSubmit" });
 
@@ -49,20 +54,24 @@ return res;}
 
 const navigate = useNavigate()   
 
-const getUser= (id)=>{
-  if (!users.length) return 'User'
-  let user = users.find(e=> e._id ===id);
-  if (user?.avatar.includes('default-image')){
-  user={...user, avatar:'https://webpulse.imgsmail.ru/imgpreview?mb=webpulse&key=pulse_cabinet-image-d23c3848-2d30-4c9a-8895-9cd55298bc6a'}
-  }
-  return user
-}
+// const getUser= (id)=>{
+//   if (!users.length) return 'User'
+//   let user = users.find(e=> e._id ===id);
+//   if (user?.avatar.includes('default-image')){
+//   user={...user, avatar:'https://webpulse.imgsmail.ru/imgpreview?mb=webpulse&key=pulse_cabinet-image-d23c3848-2d30-4c9a-8895-9cd55298bc6a'}
+//   }
+//   return user
+// }
 
 const options = {
 day: 'numeric',
 month: 'short',
 year: "numeric",
 }
+
+const onLike = (e) => {
+  onProductLike(product);
+};
 
 const textRegister= register("review", {
   required: "review обязателен",
@@ -74,9 +83,8 @@ const deleteReview = async(id)=> {
   const res= await onDeleteReview(id)
   openNotification('success', 'Успешно', 'Ваш отзыв удален')
 } catch (error) {
-  openNotification('error', 'Ошибка', 'Ваш отзыв удалить не получилось')
+  openNotification('error', 'Ошибка', 'Отзыв удалить не получилось')
 }
-
 }
 
 const hideReviews =()=> {
@@ -103,6 +111,14 @@ useEffect(()=>{
 api.getUsers().then((data)=>setUsers(data))
 },[])
 
+const deleteCard= async(data)=>{
+try {
+  await  api.deleteProductId(product._id)
+openNotification('success', 'Успешно', 'Товар успешно удален')
+} catch (error) {
+  openNotification('error', 'Ошибка', ' Товар удалить не удалось')
+}
+}
 
   return (
     <>
@@ -136,7 +152,7 @@ api.getUsers().then((data)=>setUsers(data))
               В корзину
             </button>
           </div>
-          <button className={cn(s.favorite, { [s.favoriteActive]: isLiked() })}>
+          <button onClick={(e) => onLike(e)} className={cn(s.favorite, { [s.favoriteActive]: isLiked() })}>
             <Save />
             <span>{isLiked() ? 'В избранном':'В избранное'}</span>
           </button>
@@ -161,7 +177,13 @@ api.getUsers().then((data)=>setUsers(data))
           </div>
         </div>
       </div>
-
+      <div className={s.update_box}>
+              <button className='btn' onClick={() => setUpdateModal(true)}>Редактировать товар</button>
+              {updateModal && <Modal activeModal={updateModal} setShowModal={setUpdateModal}>
+                <UpdateProduct id={id} product={product} setUpdateModal={setUpdateModal}/>
+              </Modal>}
+              <button className='btn' onClick={deleteCard}>Удалить товар</button>
+            </div>
       <div className={s.box}>
         <h2 className={s.title}>Описание</h2>
         <div>{product.description}</div>
@@ -214,17 +236,19 @@ api.getUsers().then((data)=>setUsers(data))
         .map((r)=><div key={r._id} className={s.review}>
           <div className={s.review_author}>
             <div className={s.review__info}> 
-            <img className={s.review__avatar} src={getUser(r.author)?.avatar} alt="avatar" />
-              <span>{getUser(r.author)?.name ?? 'User'}</span>
+            <img className={s.review__avatar} src={r.author?.avatar} alt="avatar" />
+            {/* <img className={s.review__avatar} src={getUser(r.author)?.avatar} alt='avatar' /> */}
+              <span>{r.author?.name ?? 'User'}</span>
               <span className={s.review__date}>{new Date(r.created_at).toLocaleString('ru', options).slice(0, 12)}</span>
               </div>
             <Rating rate={r.rating} isEditable={false}/>
             </div>
           <div className={s.text}>
           <span>{r.text}</span>
-          {currentUser._id ===r.author &&
+          {/* {users._id ===r.author && */}
           <Bascet onClick={()=>deleteReview(r._id)} className={s.text__img}/>
-        }</div>
+        {/* } */}
+        </div>
         </div> )}
       </div>
     </>

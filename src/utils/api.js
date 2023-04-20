@@ -29,8 +29,8 @@
       this._freshToken = data.freshToken;
     }
 
-    getProductList(page=1) {
-      return fetch(`${this._baseUrl}/products?page=${page}`, {
+    getProductList(page, limit) {
+      return fetch(`${this._baseUrl}/products?page=${page}&limit=${limit}`, {
       ...this._freshToken(),
       }).then(onResponse);
     }
@@ -109,6 +109,13 @@
       return fetch(`${this._baseUrl}/products/likes/${productId}`, {
         ...this._freshToken(),
         method: "PUT",
+      }).then(onResponse);
+    }
+
+    changeLikeProductStatus(productId, isLiked){
+      return fetch(`${this._baseUrl}/products/likes/${productId}`, {
+        ...this._freshToken(),
+        method: isLiked ? "DELETE" : "PUT",
       }).then(onResponse);
     }
 

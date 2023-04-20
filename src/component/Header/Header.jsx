@@ -10,11 +10,15 @@ import { CardContext } from '../../context/cardContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Like } from "../Card/like.svg";
 import { ReactComponent as Logohed } from "./images/loginh.svg"
+import { ReactComponent as Profil } from "./images/profil.svg"
+import { ReactComponent as Logaut } from "./images/logaut.svg"
+
+import { useSelector } from 'react-redux';
 
 
 export const Header =({setShowModal})=> { 
     const {setSarch, statSarch, parentCounter, isAuthentificated} = useContext(UserContext);
-    const {favorites} = useContext(CardContext);
+    const {favorites}= useSelector(s=>s.products)
 
 
 const navigate= useNavigate()
@@ -45,8 +49,12 @@ const handleLogout=()=>{
                 <Logohed/>
                 </Link> :
                 <>
-                <Link to={'/profile'} className='header_link' onClick={()=>setShowModal(true)}>profile</Link>
-                <span onClick={handleLogout}>logout</span>
+                <Link to={'/profile'} className='header_link' onClick={()=>setShowModal(true)}>
+                    <Profil/>
+                </Link>
+                <span onClick={handleLogout}>
+                    <Logaut/>
+                </span>
                  <div className='header__rait'> 
                             <User />
                             <Avatar />

@@ -2,8 +2,9 @@ import { ReactComponent as Like } from "./like.svg"
 import './Card.css'
 import { Link } from "react-router-dom"
 import React from "react"
-import { UserContext } from "../../context/userContext"
 import { findLike } from "../../utils/utils"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchChangeProductLike } from "../../storage/products/productSlice"
 
 export const Card = ({
     product, 
@@ -12,15 +13,16 @@ export const Card = ({
     discount, 
     price, 
     wight, 
-    onProductLike,
     setParentCounter
 })=> {
 
-    const {currentUser} = React.useContext(UserContext);
+    const currentUser = useSelector(s=>s.user.data)
+    const dispatch= useDispatch()
 
     const isLiked = findLike(product, currentUser);
     const handleLikeClick= ()=>{
-    onProductLike(product);
+        dispatch(fetchChangeProductLike(product))
+    // onProductLike(product);
 }    
     
     return (
@@ -30,10 +32,10 @@ export const Card = ({
           <span className="card__discount">-{discount}%</span>)}
                 </div>
             <div className="card__sticky card__sticky_type_top-right">
-                <button className={`card__favorite ${isLiked ? 'card__favorite_active': 'card__favorite_not_active'}`}
+             <button className={`card__favorite ${isLiked ? 'card__favorite_active': 'card__favorite_not_active'}`}
                 onClick = {handleLikeClick} >
-                <Like className="card__liked"/>
-                {product.likes.length}
+            <Like className="card__liked"/>
+            {product.likes.length}
                 </button>
                 </div>
 <Link to={`/product/${product._id}`} className="card__link">

@@ -18,6 +18,8 @@
         border-radius: 12px;
 }
 
+
+
 .profile__user {
         max-width: 740px;
         display: grid;
@@ -25,6 +27,10 @@
         gap: 1rem;
 
 }
+
+@media (max-width: 475px) {
+.profile__user { grid-template-columns: 1fr;
+}}
 
 .profile__avatar{
 padding: 3rem 0 2rem 0;
@@ -38,3 +44,4 @@ width: 200px;
 height: 200px;
 border-radius: 50%;
 }
+

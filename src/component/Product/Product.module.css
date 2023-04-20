@@ -276,6 +276,12 @@ cursor: pointer;
 color: orange;
 }
 
+.update_box{
+	display: flex;
+	gap: 1rem;
+    padding: 1rem 0;
+}
+
 @media (max-width: 1000px) {
 	.product {
 		gap: 20px;

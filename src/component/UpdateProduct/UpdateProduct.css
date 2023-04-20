@@ -1,0 +1,20 @@
+.update_product {
+    padding: 1rem;
+}
+
+.update-product_input {
+    padding: 0 16px;
+    gap: 10px;
+    height: 2.5rem;
+    width: 20rem;
+    background: #ffffff;
+    border: 1px solid #cfd8dc;
+    border-radius: 12px;
+    }
+
+    .form_edit_inputs {
+        max-width: 740px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
