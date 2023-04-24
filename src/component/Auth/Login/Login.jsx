@@ -68,7 +68,7 @@ return (
      {errors?.password && (
         <span className="auth_warning">{errors.password?.message}</span>)}
     <span className="auth__info auth_link" onClick={()=>navigate('/reset-password')}>Восстановить пароль</span>
-    <div className="auth__actions">
+    <div className="auth__actions_login">
     <BaseButton type="submit" color={'yellow'}>
     <span>Войти</span>
     </BaseButton>
